@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCENTS.LAB — Perfumes de Importación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f3ef;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --silver: #a0a0a0;
+    --silver-light: #d0d0d0;
+    --dark-gray: #1a1a1a;
+    --mid-gray: #2a2a2a;
+    --text-muted: #888;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-body: 'Montserrat', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .logo-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .logo-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .logo-text {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.25em;
+    color: var(--white);
+  }
+
+  nav {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  nav a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  nav a:hover { color: var(--white); }
+
+  .nav-wsp {
+    border: 1px solid var(--gold);
+    padding: 8px 18px;
+    color: var(--gold) !important;
+    border-radius: 2px;
+    transition: background 0.3s !important;
+  }
+
+  .nav-wsp:hover {
+    background: var(--gold) !important;
+    color: var(--black) !important;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(52px, 10vw, 110px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.3s, transform 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--white); transform: translateY(-1px); }
+
+  /* radial glow */
+  .hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── SECTION COMMON ── */
+  section {
+    padding: 100px 40px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.1;
+  }
+
+  .section-count {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ── TIER BADGE ── */
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .tier-member { background: rgba(255,255,255,0.08); color: var(--white); }
+  .tier-silver { background: rgba(160,160,160,0.15); color: var(--silver-light); border: 1px solid rgba(160,160,160,0.3); }
+  .tier-gold { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+
+  /* ── PRODUCT GRID ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
+  }
+
+  .product-card {
+    background: var(--dark-gray);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s ease;
+    group: true;
+  }
+
+  .product-card:hover { transform: translateY(-4px); }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .product-card:hover::before { opacity: 1; }
+
+  .card-image {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--mid-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .product-card:hover .card-image img { transform: scale(1.04); }
+
+  .card-placeholder {
+    font-family: var(--font-display);
+    font-size: 60px;
+    opacity: 0.15;
+    user-select: none;
+  }
+
+  .card-body {
+    padding: 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card-brand {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .card-name {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    color: var(--white);
+  }
+
+  .card-notes {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-price {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .card-price span {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+  }
+
+  .btn-wsp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-wsp:hover {
+    background: #25d366;
+    border-color: #25d366;
+    color: var(--black);
+  }
+
+  .btn-wsp svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+  /* gold accent card */
+  .card-gold .card-body { border-top: 1px solid rgba(201,168,76,0.3); }
+  .card-gold .card-name { color: var(--gold-light); }
+  .card-gold .btn-wsp:hover { background: var(--gold); border-color: var(--gold); }
+
+  /* silver accent card */
+  .card-silver .card-body { border-top: 1px solid rgba(160,160,160,0.3); }
+  .card-silver .btn-wsp:hover { background: var(--silver); border-color: var(--silver); color: var(--black); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+    margin: 0 40px;
+    max-width: calc(1300px - 80px);
+  }
+
+  /* ── STICKER SECTION ── */
+  .sticker-section {
+    background: var(--dark-gray);
+    padding: 80px 40px;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .sticker-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .sticker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .sticker-card {
+    padding: 48px 40px;
+    background: var(--black);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sticker-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .sticker-card.s1::after { background: rgba(255,255,255,0.15); }
+  .sticker-card.s2::after { background: linear-gradient(90deg, transparent, var(--silver), transparent); }
+  .sticker-card.s3::after { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+
+  .sticker-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sticker-icon svg {
+    width: 46px;
+    height: 46px;
+    fill: none;
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .s1 .sticker-icon { border: 1.5px solid rgba(255,255,255,0.2); }
+  .s1 .sticker-icon svg { stroke: rgba(255,255,255,0.5); }
+  .s2 .sticker-icon { border: 1.5px solid var(--silver); }
+  .s2 .sticker-icon svg { stroke: var(--silver-light); }
+  .s3 .sticker-icon { border: 1.5px solid var(--gold); }
+  .s3 .sticker-icon svg { stroke: var(--gold); }
+
+  .sticker-level {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .s1 .sticker-level { color: rgba(255,255,255,0.4); }
+  .s2 .sticker-level { color: var(--silver-light); }
+  .s3 .sticker-level { color: var(--gold); }
+
+  .sticker-name {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+
+  .sticker-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    margin-bottom: 20px;
+  }
+
+  .sticker-promo {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 8px 16px;
+    display: inline-block;
+  }
+
+  .s1 .sticker-promo { border: 1px solid rgba(255,255,255,0.1); color: var(--white); }
+  .s2 .sticker-promo { border: 1px solid var(--silver); color: var(--silver-light); }
+  .s3 .sticker-promo { border: 1px solid var(--gold); color: var(--gold-light); }
+
+  /* ── HOW TO BUY ── */
+  .how-section {
+    background: var(--black);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .step {
+    background: var(--dark-gray);
+    padding: 48px 36px;
+    position: relative;
+  }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .step-icon {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .step-icon svg {
+    width: 20px; height: 20px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .step-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 48px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--white);
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-wsp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #25d366;
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .footer-wsp:hover { opacity: 0.85; }
+  .footer-wsp svg { width: 16px; height: 16px; fill: var(--black); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    header { padding: 16px 20px; }
+    nav { display: none; }
+
+    section { padding: 70px 20px; }
+
+    .hero { padding: 90px 20px 60px; }
+
+    .product-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+
+    .sticker-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+
+    footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+
+    .section-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+    .divider { margin: 0 20px; max-width: calc(100% - 40px); }
+
+    .sticker-section { padding: 60px 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .product-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="#" class="logo-wrap">
+    <div class="logo-icon">
+      <img src="logo.png" alt="SCENTS.LAB">
+    </div>
+    <span class="logo-text">SCENTS.LAB</span>
+  </a>
+  <nav>
+    <a href="#arabes">Árabes</a>
+    <a href="#disenador">Diseñador</a>
+    <a href="#nicho">Nicho</a>
+    <a href="#vs">Victoria's Secret</a>
+    <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20SCENTS.LAB" target="_blank" class="nav-wsp">WhatsApp</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <p class="hero-eyebrow">Importación directa · Buenos Aires</p>
+  <h1 class="hero-title">Somos SCENTS.LAB,<br>fórmulas que<br>hablan por <em>vos</em></h1>
+  <p class="hero-sub">Árabes · Diseñador · Nicho · Victoria's Secret</p>
+  <div class="hero-cta">
+    <a href="#catalogo" class="btn-primary">Ver catálogo</a>
+    <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20SCENTS.LAB" target="_blank" class="btn-secondary">Consultar por WhatsApp</a>
+  </div>
+</div>
+
+<!-- CATÁLOGO ÁRABES -->
+<section id="arabes">
+  <div class="section-header fade-in visible">
+    <div>
+      <p class="section-label">LAB Member</p>
+      <h2 class="section-title">Perfumes<br>Árabes</h2>
+    </div>
+    <span class="section-count">Importación directa</span>
+  </div>
+  <div class="product-grid">
+
+    <div class="product-card fade-in visible">
+      <div class="card-image">
+        <img src="9pm_night_out.png" alt="Afnan 9PM Night Out" onerror="this.style.display=&#39;none&#39;">
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-member">⬜ LAB Member</div>
+        <p class="card-brand">Afnan</p>
+        <h3 class="card-name">9PM Night Out</h3>
+        <p class="card-notes">Amaderado · Especiado · Ámbar</p>
+        <div class="card-footer">
+          <div class="card-price">$ <span>Consultar</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20por%20el%20Afnan%209PM%20Night%20Out" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Comprar
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card fade-in visible">
+      <div class="card-image">
+        <img src="Al_Haramain_buena.png" alt="Al Haramain Amber Oud Gold" onerror="this.style.display=&#39;none&#39;">
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-member">⬜ LAB Member</div>
+        <p class="card-brand">Al Haramain</p>
+        <h3 class="card-name">Amber Oud Gold Edition</h3>
+        <p class="card-notes">Dulce · Afrutado · Ámbar · Almizclado</p>
+        <div class="card-footer">
+          <div class="card-price">$ <span>Consultar</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20por%20el%20Al%20Haramain%20Amber%20Oud%20Gold%20Edition" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Comprar
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER CARD -->
+    <div class="product-card fade-in visible">
+      <div class="card-image">
+        <div class="card-placeholder">🧪</div>
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-member">⬜ LAB Member</div>
+        <p class="card-brand">Próximamente</p>
+        <h3 class="card-name">Nuevo Árabe</h3>
+        <p class="card-notes">Consultá disponibilidad por WhatsApp</p>
+        <div class="card-footer">
+          <div class="card-price">$ <span>Consultar</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20perfumes%20%C3%A1rabes" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Consultar
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DISEÑADOR -->
+<section id="disenador">
+  <div class="section-header fade-in visible">
+    <div>
+      <p class="section-label" style="color: var(--silver-light)">LAB Silver</p>
+      <h2 class="section-title">Perfumes de<br>Diseñador</h2>
+    </div>
+    <span class="section-count">Línea plateada</span>
+  </div>
+  <div class="product-grid">
+
+    <div class="product-card card-silver fade-in visible">
+      <div class="card-image">
+        <img src="Strong_With_You_Intensely.png" alt="Emporio Armani Stronger With You" onerror="this.style.display=&#39;none&#39;">
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-silver">🩶 LAB Silver</div>
+        <p class="card-brand">Emporio Armani</p>
+        <h3 class="card-name">Stronger With You Intensely</h3>
+        <p class="card-notes">Avainillado · Ámbar · Canela · Caramelo</p>
+        <div class="card-footer">
+          <div class="card-price">$ <span>185.000</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20por%20el%20Armani%20Stronger%20With%20You%20Intensely" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Comprar
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card card-silver fade-in visible">
+      <div class="card-image">
+        <div class="card-placeholder">🤍</div>
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-silver">🩶 LAB Silver</div>
+        <p class="card-brand">Próximamente</p>
+        <h3 class="card-name">Nuevo Diseñador</h3>
+        <p class="card-notes">Consultá disponibilidad por WhatsApp</p>
+        <div class="card-footer">
+          <div class="card-price">$ <span>Consultar</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20perfumes%20de%20dise%C3%B1ador" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Consultar
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NICHO -->
+<section id="nicho">
+  <div class="section-header fade-in visible">
+    <div>
+      <p class="section-label">LAB Gold</p>
+      <h2 class="section-title">Perfumes<br>de Nicho</h2>
+    </div>
+    <span class="section-count">Línea dorada · Lo más exclusivo</span>
+  </div>
+  <div class="product-grid">
+
+    <div class="product-card card-gold fade-in visible">
+      <div class="card-image">
+        <div class="card-placeholder">🥇</div>
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-gold">🥇 LAB Gold</div>
+        <p class="card-brand">Próximamente</p>
+        <h3 class="card-name">Perfume de Nicho</h3>
+        <p class="card-notes">Consultá disponibilidad por WhatsApp · Stock limitado</p>
+        <div class="card-footer">
+          <div class="card-price">USD <span>Consultar</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20perfumes%20de%20nicho" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Consultar
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- VICTORIA'S SECRET -->
+<section id="vs">
+  <div class="section-header fade-in visible">
+    <div>
+      <p class="section-label">LAB Member</p>
+      <h2 class="section-title">Victoria's<br>Secret</h2>
+    </div>
+    <span class="section-count">Importación directa</span>
+  </div>
+  <div class="product-grid">
+    <div class="product-card fade-in visible">
+      <div class="card-image">
+        <div class="card-placeholder">🌸</div>
+      </div>
+      <div class="card-body">
+        <div class="tier-badge tier-member">⬜ LAB Member</div>
+        <p class="card-brand">Victoria's Secret</p>
+        <h3 class="card-name">Catálogo disponible</h3>
+        <p class="card-notes">Consultá por WhatsApp para ver todo el stock disponible</p>
+        <div class="card-footer">
+          <div class="card-price">$ <span>Consultar</span></div>
+          <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20Victoria%27s%20Secret" target="_blank" class="btn-wsp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+            Consultar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STICKER SYSTEM -->
+<div class="sticker-section">
+  <div class="sticker-inner">
+    <div class="section-header fade-in visible" style="border-bottom-color: rgba(201,168,76,0.15)">
+      <div>
+        <p class="section-label">Sistema de niveles</p>
+        <h2 class="section-title">Cada compra<br>dice algo de vos</h2>
+      </div>
+    </div>
+    <div class="sticker-grid">
+
+      <div class="sticker-card s1 fade-in visible">
+        <div class="sticker-icon">
+          <svg viewBox="0 0 46 46">
+            <path d="M23 8 L28 18 L38 20 L30 28 L32 38 L23 33 L14 38 L16 28 L8 20 L18 18 Z"></path>
+          </svg>
+        </div>
+        <p class="sticker-level">Nivel 1</p>
+        <h3 class="sticker-name">LAB Member</h3>
+        <p class="sticker-desc">Con cada perfume árabe o Victoria's Secret recibís tu sticker blanco. Juntá 7 y llevate uno gratis.</p>
+        <span class="sticker-promo">7 stickers = 1 perfume gratis</span>
+      </div>
+
+      <div class="sticker-card s2 fade-in visible">
+        <div class="sticker-icon">
+          <svg viewBox="0 0 46 46">
+            <path d="M23 6 L28 17 L40 19 L31 28 L33 40 L23 34 L13 40 L15 28 L6 19 L18 17 Z"></path>
+          </svg>
+        </div>
+        <p class="sticker-level">Nivel 2</p>
+        <h3 class="sticker-name">LAB Silver</h3>
+        <p class="sticker-desc">Con cada perfume de diseñador recibís tu sticker tornasolado plateado. Juntá 5 y llevate un diseñador hasta $150K.</p>
+        <span class="sticker-promo">5 stickers = diseñador hasta $150K</span>
+      </div>
+
+      <div class="sticker-card s3 fade-in visible">
+        <div class="sticker-icon">
+          <svg viewBox="0 0 46 46">
+            <path d="M23 4 L29 16 L42 18 L32 28 L35 41 L23 35 L11 41 L14 28 L4 18 L17 16 Z"></path>
+          </svg>
+        </div>
+        <p class="sticker-level">Nivel 3</p>
+        <h3 class="sticker-name">LAB Gold</h3>
+        <p class="sticker-desc">Con cada perfume de nicho recibís tu sticker tornasolado dorado. Juntá 5 y llevate un nicho hasta USD 200.</p>
+        <span class="sticker-promo">5 stickers = nicho hasta USD 200</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CÓMO COMPRAR -->
+<section class="how-section">
+  <div class="section-header fade-in visible">
+    <div>
+      <p class="section-label">Simple y rápido</p>
+      <h2 class="section-title">Cómo comprar</h2>
+    </div>
+  </div>
+  <div class="steps">
+
+    <div class="step fade-in visible">
+      <span class="step-num">01</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 20 20"><path d="M10 2L2 7v11h16V7L10 2z"></path><path d="M7 18V12h6v6"></path></svg>
+      </div>
+      <h3 class="step-title">Elegí tu perfume</h3>
+      <p class="step-desc">Navegá el catálogo y encontrá el que te gusta. Podés filtrar por categoría o consultarnos si tenés dudas.</p>
+    </div>
+
+    <div class="step fade-in visible">
+      <span class="step-num">02</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 20 20"><path d="M3 4h14M3 8h14M3 12h10"></path><circle cx="16" cy="14" r="3"></circle><path d="M16 13v1l1 1"></path></svg>
+      </div>
+      <h3 class="step-title">Mandá el pedido</h3>
+      <p class="step-desc">Presioná "Comprar" y se abre WhatsApp con el mensaje listo. Nosotros confirmamos disponibilidad y precio.</p>
+    </div>
+
+    <div class="step fade-in visible">
+      <span class="step-num">03</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 20 20"><path d="M3 3h14l-2 8H5L3 3z"></path><circle cx="8" cy="17" r="1"></circle><circle cx="14" cy="17" r="1"></circle></svg>
+      </div>
+      <h3 class="step-title">Coordinamos entrega</h3>
+      <p class="step-desc">Acordamos el envío o retiro. Rápido, seguro y con sticker de nivel incluido en cada compra.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">SCENTS.LAB</span>
+  <span class="footer-copy">Fórmulas que hablan por vos · Buenos Aires · © 2025</span>
+  <a href="https://wa.me/5491128867575?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo%20de%20SCENTS.LAB" target="_blank" class="footer-wsp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg>
+    Contactar
+  </a>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 80 * (Array.from(entry.target.parentElement?.children || []).indexOf(entry.target)));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+
+</body>
+</html>
